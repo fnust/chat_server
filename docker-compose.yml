@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  server_app:
+      build: .
+      container_name: chat_server_app
+      command: npm run start
+      restart: unless-stopped
+      env_file: .env
+      ports:
+      - '9000:9000'
+      depends_on:
+        - postgres_service
+
+  postgres_service:
+    image: postgres:12-alpine
+    container_name: chat_postgres
+    env_file: .env
+    volumes:
+      - pgdb:/data/db
+    ports:
+      - '5432:5432'
+
+volumes:
+  pgdb:
